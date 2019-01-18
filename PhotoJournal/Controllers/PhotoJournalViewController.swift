@@ -40,18 +40,40 @@ class PhotoJournalViewController: UIViewController {
         let actionSheet = UIAlertController(title: "Options", message: "", preferredStyle: .actionSheet)
         
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (action) -> Void in
-            PhotoJournalModel.delete(atIndex: sender.tag) }
+            PhotoJournalModel.delete(atIndex: sender.tag)
+            self.arrayOfPhotoJournalEntries.remove(at: sender.tag)
+            self.photoJournalCollectionView.reloadData()
+            PhotoJournalModel.save()
+        }
+        
+//        let editAction = UIAlertAction(title: "Edit", style: .cancel) { _ in
+//            let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+//            guard let photoJournalDetailViewController = storyboard.instantiateViewController(withIdentifier: "addPostViewController") as? PhotoJournalDetailViewController else {return}
+//            photoJournalDetailViewController.modalPresentationStyle = .currentContext
+//            self.navigationController?.present(photoJournalDetailViewController, animated: true, completion: nil)
+//        }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
             self.dismiss(animated: true, completion: nil)
         }
-       let shareAction = UIAlertAction(title: "Share", style: .default) { (share) in
+       let shareAction = UIAlertAction(title: "Share", style: .default) { _ in
+        self.shareJournal(atIndex: sender.tag)
             
         }
         
+        //actionSheet.addAction(editAction)
         actionSheet.addAction(deleteAction)
+        actionSheet.addAction(shareAction)
         actionSheet.addAction(cancelAction)
         present(actionSheet, animated: true, completion: nil)
         
+    }
+    
+    private func shareJournal(atIndex: Int) {
+        if let imageToShare = UIImage(data: arrayOfPhotoJournalEntries[atIndex].imageData) {
+            let captionToShare = arrayOfPhotoJournalEntries[atIndex].description
+            let activityViewController = UIActivityViewController(activityItems: [imageToShare, captionToShare], applicationActivities: nil)
+            present(activityViewController, animated: true)
+        }
     }
     
     @IBAction func addPhotoButtonPressed(_ sender: UIBarButtonItem) {
