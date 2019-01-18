@@ -46,12 +46,11 @@ class PhotoJournalViewController: UIViewController {
             PhotoJournalModel.save()
         }
         
-//        let editAction = UIAlertAction(title: "Edit", style: .cancel) { _ in
-//            let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-//            guard let photoJournalDetailViewController = storyboard.instantiateViewController(withIdentifier: "addPostViewController") as? PhotoJournalDetailViewController else {return}
-//            photoJournalDetailViewController.modalPresentationStyle = .currentContext
-//            self.navigationController?.present(photoJournalDetailViewController, animated: true, completion: nil)
-//        }
+        let editAction = UIAlertAction(title: "Edit", style: .default) { _ in
+            let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+            guard let photoJournalDetailViewController = storyboard.instantiateViewController(withIdentifier: "addPostViewController") as? PhotoJournalDetailViewController else {return}
+            self.present(photoJournalDetailViewController, animated: true, completion: nil)
+        }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
             self.dismiss(animated: true, completion: nil)
         }
@@ -60,7 +59,7 @@ class PhotoJournalViewController: UIViewController {
             
         }
         
-        //actionSheet.addAction(editAction)
+        actionSheet.addAction(editAction)
         actionSheet.addAction(deleteAction)
         actionSheet.addAction(shareAction)
         actionSheet.addAction(cancelAction)
